@@ -5,9 +5,9 @@
 #include <WiFiUdp.h>
 #include "secrets.h" // WiFi Configuration (WiFi name and Password)
 #include <ArduinoJson.h>
-#include <LiquidCrystal.h>
+#include <LiquidCrystal_I2C.h>
 
-LiquidCrystal lcd(0x27, 16, 2);
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 const char* ssid = SSID;
 const char* password = WIFI_PASSWORD;
@@ -122,7 +122,7 @@ void loop() {
   lcd.print("$" + BTCUSDPrice);
 
   //Display 24hr. Percent Change
-  String dayChangeString = "24h Change ";
+  String dayChangeString = "24h Chan. ";
   if (isUp) {
     percentChange = ((BTCUSDPrice.toDouble() - yesterdayPrice) / yesterdayPrice) * 100;
   } else {
