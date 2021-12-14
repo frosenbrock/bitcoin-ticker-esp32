@@ -2,18 +2,16 @@
 #include <WiFi.h>
 #include <Wire.h>
 #include <HTTPClient.h>
-#include <NTPClient.h> 
+#include <NTPClient.h>
 #include <WiFiUdp.h>
 #include "secrets.h" // WiFi Configuration (WiFi name and Password)
 #include <ArduinoJson.h>
-#define SCREEN_WIDTH 128 // OLED display width, in pixels
-#define SCREEN_HEIGHT 64 // OLED display height, in pixels
-#define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
-#define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+#include <LiquidCrystal_I2C.h>
 
-const char* ssid = SECRET_SSID;
-const char* password = SECRET_WIFI_PASSWORD;
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+const char* ssid = SSID;
+const char* password = WIFI_PASSWORD;
 
 const int httpsPort = 443;
 // Powered by CoinDesk - https://www.coindesk.com/price/bitcoin
@@ -30,18 +28,12 @@ String dayStamp;
 String timeStamp;
 
 void setup() {
-  Serial.begin(115200);
 
-  if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
-    Serial.println(F("SSD1306 allocation failed"));
-    for (;;); // Don't proceed, loop forever
-  }
+  lcd.init();                   
+  lcd.backlight();
 
-  display.clearDisplay();
-  display.setTextSize(1);
-  display.setTextColor(WHITE);
-  display.println("Connecting to WiFi...");
-  display.display();
+  lcd.setCursor(0, 0);
+  lcd.print("Connecting...");
 
   WiFi.begin(ssid, password);
 
@@ -53,12 +45,12 @@ void setup() {
   }
   Serial.println();
 
-  display.println("Connected to: ");
-  display.print(ssid);
-  display.display();
+  lcd.clear();
+  lcd.print("Connected to ");
+  lcd.setCursor(0, 1);
+  lcd.print(ssid);
   delay(1500);
-  display.clearDisplay();
-  display.display();
+  lcd.clear();
 
 }
 
@@ -124,36 +116,24 @@ void loop() {
   Serial.println(percentChange);
 
   //Display Header
-  display.clearDisplay();
-  display.setTextSize(1);
-  printCenter("BTC/USD", 0, 0);
+  lcd.clear();
+  lcd.print("BTC/USD ");
 
   //Display BTC Price
-  display.setTextSize(2);
-  printCenter("$" + BTCUSDPrice, 0, 25);
+  lcd.print("$" + BTCUSDPrice);
 
   //Display 24hr. Percent Change
-  String dayChangeString = "24hr. Change: ";
+  String dayChangeString = "24h Change ";
   if (isUp) {
     percentChange = ((BTCUSDPrice.toDouble() - yesterdayPrice) / yesterdayPrice) * 100;
   } else {
     percentChange = ((yesterdayPrice - BTCUSDPrice.toDouble()) / yesterdayPrice) * 100;
     dayChangeString = dayChangeString + "-";
   }
-  display.setTextSize(1);
   dayChangeString = dayChangeString + percentChange + "%";
-  printCenter(dayChangeString, 0, 55);
-  display.display();
+  lcd.setCursor(0, 1);
+  lcd.print(dayChangeString);
 
   http.end();
   delay(10000);
-}
-
-void printCenter(const String buf, int x, int y)
-{
-  int16_t x1, y1;
-  uint16_t w, h;
-  display.getTextBounds(buf, x, y, &x1, &y1, &w, &h); //calc width of new string
-  display.setCursor((x - w / 2) + (128 / 2), y);
-  display.print(buf);
 }
