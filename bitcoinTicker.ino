@@ -1,4 +1,3 @@
-#include <Adafruit_SSD1306.h>
 #include <WiFi.h>
 #include <Wire.h>
 #include <HTTPClient.h>
@@ -6,9 +5,9 @@
 #include <WiFiUdp.h>
 #include "secrets.h" // WiFi Configuration (WiFi name and Password)
 #include <ArduinoJson.h>
-#include <LiquidCrystal_I2C.h>
+#include <LiquidCrystal.h>
 
-LiquidCrystal_I2C lcd(0x27, 16, 2);
+LiquidCrystal lcd(0x27, 16, 2);
 
 const char* ssid = SSID;
 const char* password = WIFI_PASSWORD;

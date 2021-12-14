@@ -1,9 +1,10 @@
 # Bitcoin Ticker
 
-Bitcoin Ticker is Arduino code for ESP32 boards. This ticker displays the price of Bitcoin/USD and idicates whether the crypto currency went up or down. The price data comes from the CoinMarketCap API.
+Bitcoin Ticker is Arduino code for ESP32 boards with 1602 LCD. This ticker displays the price of Bitcoin/USD and idicates whether the crypto currency went up or down. The price data comes from the CoinMarketCap API.
 
-# Wiring Diagram
-![Wiring Diagram](wire-diagram.png)
+# Hardware
+* ESP32 Dev Kit
+* 1602 16x2 LCD Display
 
 # Installation
 Connect your ESP32 board to your computer and open `bitcoinTicker.ino` with the Arduino IDE. 
@@ -14,14 +15,16 @@ Select the correct port that your ESP32 is plugged into via `Tools > Port`. If y
 
 Hit the `Verify` button. Install any necessary libraries via `Tools > Manage Libraries`. Below is the list of libraries I used in this project. You should be able to find them pretty quick by typing these into the search bar. All libraries are found in the Arduino Library Manger(`Tools > Manage Libraries`.) No special installation is needed outside of their library.
 
+It may be necessary to use the VIN pin to obtain more voltage by the display
+
 Libraries Used:
-* Adafruit_SSD1306 (For the OLED Display)
 * WiFi (For ESP32 onboard WiFi)
 * Wire
 * HTTPClient (To make requests to CoinMarketCap)
 * NTPClinet (Used to get the time for "Last Updated")
 * WiFiUdp (Used to get the time for "Last Updated")
 * ArduinoJson (Used to process JSON data retreived from CoinMarketCap)
+* LiquidCrystal I2C by Marco Schwartz (For LCD display)
 
 Once everything is verified successfully, hit the `Upload` button. If your OLED is wired up correctly, you should see the screen displaying that it's connecting to your network, then it will show the ticker. 
 
@@ -32,6 +35,4 @@ Plug Micro-USB into the Arduino and everything should boot up successfully in le
 Whatever you need; questions answered, requests, bugs; make an Issue. I'll get to them as soon as I can.
 
 # Support Me
-Support me with some Bitcoin! - Wallet: 1NjSoJX4biGi5hW72NX7eLYvzMVgjChfRA
-
-Or buy me a coffee - Venmo - @AndrewBudziszek
+Support me with some Bitcoin! - Wallet: bc1qps5qn33y3n0h09nswh8uxmxr08pjltnxvg5rx4
