@@ -36,3 +36,5 @@ Whatever you need; questions answered, requests, bugs; make an Issue. I'll get t
 
 # Support Me
 Support me with some Bitcoin! - Wallet: bc1qps5qn33y3n0h09nswh8uxmxr08pjltnxvg5rx4
+
+Also support SonnyBrooks/bitcoin-ticker-esp32 
